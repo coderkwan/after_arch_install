@@ -1,5 +1,4 @@
 import os
-import shutil
 from termcolor import colored
 
 def main():
@@ -31,16 +30,30 @@ def install_packages():
         s = f.read()
         formatted += s.replace('\n', ' ')
 
-    r_val = os.system('sudo pacman -Suyy ' + formatted)
+    r_val = os.system('sudo pacman --needed -Suy ' + formatted)
     return r_val
 
 def run_post_configs():
     os.system('cd ~')
+
+    #slack
+    slack = os.system('yay -S slack-desktop')
+    if(slack !=0):
+        return slack
+
+    #neovim
+    neo1 = os.system('curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz')
+    neo2 = os.system('sudo rm -rf /opt/nvim')
+    neo3 = os.system('sudo tar -C /opt -xzf nvim-linux64.tar.gz')
+    if(neo1 !=0 or neo2 !=0 or neo3 != 0):
+        return neo1 + neo2 + neo3
+    os.system('rm -rf nvim-linux64.tar.gz')
+
     #install oh myzsh
     zsh = os.system('sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"')
-
     if(zsh != 0):
         return zsh
+
     #set git
     git = os.system('git config --glablal user.name "Kwanele Gamedze"')
     git = os.system('git config --glablal user.email "kwanelegamedze4@gmial.com"')
@@ -49,16 +62,14 @@ def run_post_configs():
     if(con != 0):
         return con
     
-    os.system('cd ~')
-
     #nvm
+    os.system('cd ~')
     nvm = os.system('curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash')
-
     if(nvm != 0):
         return nvm
-    os.system('source .zshrc')
 
     #install node
+    os.system('source .zshrc')
     node = os.system('nvm install 22')
     if(node != 0):
         return node
@@ -66,19 +77,24 @@ def run_post_configs():
     #vim plug
     plug = os.system('sh -c \'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim\'')
-
     if(plug != 0):
         return plug
+
     #dotnet-ef
     ef =os.system('dotnet tool install --global dotnet-ef')
     if(ef != 0):
         return ef
 
     #mkdir
-    dirs =os.system('mkdir ~/Art && mkdir ~/Art/Projects && mkdir ~/Art/Lessons')
+    dirs = os.system('mkdir ~/Art && mkdir ~/Art/Projects && mkdir ~/Art/Lessons')
+    if(dirs != 0):
+        return dirs
 
     #clone repos
     nvim =os.system('cd ~/.configs && gh repo clone nvim')
+    if(nvim != 0):
+        return nvim
+
     done =os.system('cd ~')
     return 0
 
