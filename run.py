@@ -59,7 +59,7 @@ def run_post_configs():
     git = os.system('git config --glablal user.name "Kwanele Gamedze"')
     git = os.system('git config --glablal user.email "kwanelegamedze4@gmial.com"')
     gh = os.system('gh auth login')
-    con = os.system('cd ~ && gh repo clone Configs && cd ~Configs && python run.py pull')
+    con = os.system('cd ~ && gh repo clone Configs && cd ~Configs && ./updateconfigs pull')
     if(con != 0):
         return con
     
