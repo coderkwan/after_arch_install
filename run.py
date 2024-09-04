@@ -21,7 +21,6 @@ def main():
     else:
         update('Failed setting up Mirrors. please see errors and re-run the script', 'red')
 
-    return 0
 
 
 def install_packages():
@@ -32,6 +31,8 @@ def install_packages():
 
     r_val = os.system('sudo pacman --needed -Suy ' + formatted)
     return r_val
+
+
 
 def run_post_configs():
     os.system('cd ~')
@@ -81,7 +82,7 @@ def run_post_configs():
         return plug
 
     #dotnet-ef
-    ef =os.system('dotnet tool install --global dotnet-ef')
+    ef = os.system('dotnet tool install --global dotnet-ef')
     if(ef != 0):
         return ef
 
@@ -102,6 +103,8 @@ def update(text, color):
     print(colored('---------------------------',color))
     print(colored(text,color))
     print(colored('---------------------------',color))
+
+
 
 main()
 

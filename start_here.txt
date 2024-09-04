@@ -1,3 +1,2 @@
-1. install python
-2. install pythbo-pip
-3. pip install termcolor --break-system-packages
+sudo pacman -S python python-pip
+pip install termcolor --break-system-packages
